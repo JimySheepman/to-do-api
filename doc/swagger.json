@@ -1,0 +1,243 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a sample server Todo App server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters.",
+    "version": "1.0.0",
+    "title": "Swagger Todo App",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "petstore.swagger.io",
+  "basePath": "/v2",
+  "tags": [
+    {
+      "name": "task",
+      "description": "Everything about your Tasks"
+    },
+    {
+      "name": "comment",
+      "description": "Everything about your Comments"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/task/create": {
+      "post": {
+        "tags": [
+          "task"
+        ],
+        "summary": "Create a new task with body parameters",
+        "description": "It creates a new task based on the data it receives from the body.",
+        "operationId": "crateTask",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid operation"
+          },
+          "405": {
+            "description": "The endpoint only accept POST method."
+          }
+        }
+      }
+    },
+    "/task/list": {
+      "get": {
+        "tags": [
+          "task"
+        ],
+        "summary": "List all tasks",
+        "description": "Returns a map of all task",
+        "operationId": "getTasks",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid operation"
+          },
+          "405": {
+            "description": "The endpoint only accept GET method."
+          }
+        }
+      }
+    },
+    "/task/update": {
+      "put": {
+        "tags": [
+          "task"
+        ],
+        "summary": "Updated task",
+        "description": "Performs the update according to the data received from the query param.",
+        "operationId": "updateTask",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid operation"
+          },
+          "405": {
+            "description": "The endpoint only accept PUT method."
+          }
+        }
+      }
+    },
+    "/task/delete": {
+      "delete": {
+        "tags": [
+          "task"
+        ],
+        "summary": "Deletes a task",
+        "description": "Performs the  delete according to the data received from the query param.",
+        "operationId": "deleteTask",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid operation"
+          },
+          "405": {
+            "description": "The endpoint only accept DELETE method."
+          }
+        }
+      }
+    },
+    "/comment/create": {
+      "post": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Create a new comment with body parameters",
+        "description": "It creates a new comment based on the data it receives from the body.",
+        "operationId": "crateComment",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid operation"
+          },
+          "405": {
+            "description": "The endpoint only accept POST method."
+          }
+        }
+      }
+    },
+    "/comment/list": {
+      "get": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "List all comment",
+        "description": "Returns a map of all comment",
+        "operationId": "getComment",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid operation"
+          },
+          "405": {
+            "description": "The endpoint only accept GET method."
+          }
+        }
+      }
+    },
+    "/comment/update": {
+      "put": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Updated comment",
+        "description": "Performs the update according to the data received from the query param.",
+        "operationId": "updateComment",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid operation"
+          },
+          "405": {
+            "description": "The endpoint only accept PUT method."
+          }
+        }
+      }
+    },
+    "/comment/delete": {
+      "delete": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Deletes a comment",
+        "description": "Performs the  delete according to the data received from the query param.",
+        "operationId": "deleteComment",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid operation"
+          },
+          "405": {
+            "description": "The endpoint only accept DELETE method."
+          }
+        }
+      }
+    }
+  }
+}

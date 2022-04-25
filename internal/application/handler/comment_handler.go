@@ -8,35 +8,36 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type TaskHandler struct {
-	taskService service.TaskService
+type CommentHandler struct {
+	commentService service.CommentService
 }
 
-func NewTaskHandler(taskRoute fiber.Router, service service.TaskService) {
-	handler := &TaskHandler{
-		taskService: service,
+func NewCommentHandler(commentRoute fiber.Router, service service.CommentService) {
+
+	handler := &CommentHandler{
+		commentService: service,
 	}
 
-	taskRoute.Post("/create", handler.createTask)
-	taskRoute.Get("/list", handler.listTask)
-	taskRoute.Put("/update/:id", handler.updateTask)
-	taskRoute.Delete("/delete/:id", handler.deleteTask)
+	commentRoute.Post("/create", handler.createComment)
+	commentRoute.Get("/list", handler.listComment)
+	commentRoute.Put("/update/:id", handler.updateComment)
+	commentRoute.Delete("/delete/:id", handler.deleteComment)
 }
 
-func (h *TaskHandler) createTask(c *fiber.Ctx) error {
-	task := &model.Task{}
+func (h *CommentHandler) createComment(c *fiber.Ctx) error {
+	comment := &model.Comment{}
 
 	customContext, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	if err := c.BodyParser(task); err != nil {
+	if err := c.BodyParser(comment); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
 			"status":  "fail",
 			"message": err.Error(),
 		})
 	}
 
-	err := h.taskService.CreateTask(customContext, task)
+	err := h.commentService.CreateComment(customContext, comment)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
 			"status":  "fail",
@@ -46,15 +47,15 @@ func (h *TaskHandler) createTask(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusCreated).JSON(&fiber.Map{
 		"status":  "success",
-		"message": "Task has been created successfully!",
+		"message": "Comment has been created successfully!",
 	})
 }
 
-func (h *TaskHandler) listTask(c *fiber.Ctx) error {
+func (h *CommentHandler) listComment(c *fiber.Ctx) error {
 	customContext, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	tasks, err := h.taskService.ListTask(customContext)
+	comments, err := h.commentService.ListComment(customContext)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
 			"status":  "fail",
@@ -64,25 +65,25 @@ func (h *TaskHandler) listTask(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(&fiber.Map{
 		"status": "success",
-		"data":   tasks,
+		"data":   comments,
 	})
 }
 
-func (h *TaskHandler) updateTask(c *fiber.Ctx) error {
-	task := &model.Task{}
-	targetedTaskId := c.Locals("id").(int)
+func (h *CommentHandler) updateComment(c *fiber.Ctx) error {
+	comment := &model.Comment{}
+	targetedId := c.Locals("id").(int)
 
 	customContext, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	if err := c.BodyParser(task); err != nil {
+	if err := c.BodyParser(comment); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
 			"status":  "fail",
 			"message": err.Error(),
 		})
 	}
 
-	err := h.taskService.UpdateTask(customContext, targetedTaskId, task)
+	err := h.commentService.UpdateComment(customContext, targetedId, comment)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
 			"status":  "fail",
@@ -92,17 +93,17 @@ func (h *TaskHandler) updateTask(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(&fiber.Map{
 		"status":  "success",
-		"message": "Task has been updated successfully!",
+		"message": "Comment has been updated successfully!",
 	})
 }
 
-func (h *TaskHandler) deleteTask(c *fiber.Ctx) error {
-	targetedTaskId := c.Locals("id").(int)
+func (h *CommentHandler) deleteComment(c *fiber.Ctx) error {
+	targetedId := c.Locals("id").(int)
 
 	customContext, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	err := h.taskService.DeleteTask(customContext, targetedTaskId)
+	err := h.commentService.DeleteComment(customContext, targetedId)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
 			"status":  "fail",

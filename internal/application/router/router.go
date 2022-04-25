@@ -1,6 +1,8 @@
 package router
 
 import (
+	"fmt"
+
 	"github.com/JimySheepman/to-do-api/internal/application/handler"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -20,4 +22,13 @@ func SetupRoutes(app *fiber.App) {
 	comment.Get("/list", handler.ListComment)
 	comment.Patch("/update", handler.UpdateComment)
 	comment.Delete("/delete", handler.DeleteComment)
+
+	app.All("*", func(c *fiber.Ctx) error {
+		errorMessage := fmt.Sprintf("Route '%s' does not exist in this API!", c.OriginalURL())
+
+		return c.Status(fiber.StatusNotFound).JSON(&fiber.Map{
+			"status":  "fail",
+			"message": errorMessage,
+		})
+	})
 }

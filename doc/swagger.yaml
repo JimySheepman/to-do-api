@@ -54,7 +54,7 @@ paths:
         "405":
           description: "The endpoint only accept GET method."
   /task/update:
-    put:
+    patch:
       tags:
       - "task"
       summary: "Updated task"
@@ -70,7 +70,7 @@ paths:
         "400":
           description: "Invalid operation"
         "405":
-          description: "The endpoint only accept PUT method."
+          description: "The endpoint only accept PATCH method."
   /task/delete:
     delete:
       tags:
@@ -124,7 +124,7 @@ paths:
         "405":
           description: "The endpoint only accept GET method."
   /comment/update:
-    put:
+    patch:
       tags:
       - "comment"
       summary: "Updated comment"
@@ -140,7 +140,7 @@ paths:
         "400":
           description: "Invalid operation"
         "405":
-          description: "The endpoint only accept PUT method."
+          description: "The endpoint only accept PATCH method."
   /comment/delete:
     delete:
       tags:

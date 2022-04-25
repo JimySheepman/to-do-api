@@ -267,8 +267,8 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "localhost:2805",
-	BasePath:    "/",
+	Host:        "localhost:8080",
+	BasePath:    "/swagger",
 	Schemes:     []string{"http"},
 	Title:       "Web Sample API",
 	Description: "This is a sample web.",

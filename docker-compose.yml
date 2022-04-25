@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: always
+    image: to-do-api:latest
+    ports:
+      - 8080:8080
+    networks:
+      - application
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    command: ./app
+
+  postgres:
+    container_name: postgres
+    image: postgres:14-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - 5432:5432
+    networks:
+      - application
+    volumes: 
+      - db:/var/lib/postgresql/data
+      - ./db/migrations/create_tasks_table.sql:/docker-entrypoint-initdb.d/1.sql
+      - ./db/migrations/create_comments_table.sql:/docker-entrypoint-initdb.d/2.sql
+
+volumes:
+  db:
+    driver: local
+
+networks:
+  application:

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/JimySheepman/to-do-api/internal/domain/model"
 	"github.com/JimySheepman/to-do-api/internal/domain/service"
@@ -71,7 +72,12 @@ func (h *CommentHandler) listComment(c *fiber.Ctx) error {
 
 func (h *CommentHandler) updateComment(c *fiber.Ctx) error {
 	comment := &model.Comment{}
-	targetedId := c.Locals("id").(int)
+	paramsMap := c.AllParams()
+
+	targetedId, err := strconv.Atoi(paramsMap["id"])
+	if err != nil {
+		return err
+	}
 
 	customContext, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -83,7 +89,7 @@ func (h *CommentHandler) updateComment(c *fiber.Ctx) error {
 		})
 	}
 
-	err := h.commentService.UpdateComment(customContext, targetedId, comment)
+	err = h.commentService.UpdateComment(customContext, targetedId, comment)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
 			"status":  "fail",
@@ -98,12 +104,17 @@ func (h *CommentHandler) updateComment(c *fiber.Ctx) error {
 }
 
 func (h *CommentHandler) deleteComment(c *fiber.Ctx) error {
-	targetedId := c.Locals("id").(int)
+	paramsMap := c.AllParams()
+
+	targetedId, err := strconv.Atoi(paramsMap["id"])
+	if err != nil {
+		return err
+	}
 
 	customContext, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	err := h.commentService.DeleteComment(customContext, targetedId)
+	err = h.commentService.DeleteComment(customContext, targetedId)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
 			"status":  "fail",

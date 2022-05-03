@@ -9,10 +9,10 @@ import (
 )
 
 const (
-	QUERY_CREATE_COMMENT = "INSERT INTO comments (task_id, user_name, user_comment,created_at) VALUES (?, ?, ?, ?)"
+	QUERY_CREATE_COMMENT = "INSERT INTO comments (task_id, user_name, user_comment,created_at) VALUES ($1, $2, $3, $4)"
 	QUERY_GET_COMMENTS   = "SELECT * FROM comments"
-	QUERY_UPDATE_COMMENT = "UPDATE comments SET username = ?, user_comment = ? WHERE id = ?"
-	QUERY_DELETE_COMMENT = "DELETE FROM comments WHERE id = ?"
+	QUERY_UPDATE_COMMENT = "UPDATE comments SET username = $1, user_comment = $2 WHERE id = $3"
+	QUERY_DELETE_COMMENT = "DELETE FROM comments WHERE id = $1"
 )
 
 type postgresqlCommentRepository struct {

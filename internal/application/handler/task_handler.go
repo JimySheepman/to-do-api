@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/JimySheepman/to-do-api/internal/domain/model"
 	"github.com/JimySheepman/to-do-api/internal/domain/service"
@@ -70,7 +71,12 @@ func (h *TaskHandler) listTask(c *fiber.Ctx) error {
 
 func (h *TaskHandler) updateTask(c *fiber.Ctx) error {
 	task := &model.Task{}
-	targetedTaskId := c.Locals("id").(int)
+	paramsMap := c.AllParams()
+
+	targetedTaskId, err := strconv.Atoi(paramsMap["id"])
+	if err != nil {
+		return err
+	}
 
 	customContext, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -82,7 +88,7 @@ func (h *TaskHandler) updateTask(c *fiber.Ctx) error {
 		})
 	}
 
-	err := h.taskService.UpdateTask(customContext, targetedTaskId, task)
+	err = h.taskService.UpdateTask(customContext, targetedTaskId, task)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
 			"status":  "fail",
@@ -97,12 +103,16 @@ func (h *TaskHandler) updateTask(c *fiber.Ctx) error {
 }
 
 func (h *TaskHandler) deleteTask(c *fiber.Ctx) error {
-	targetedTaskId := c.Locals("id").(int)
+	paramsMap := c.AllParams()
 
+	targetedTaskId, err := strconv.Atoi(paramsMap["id"])
+	if err != nil {
+		return err
+	}
 	customContext, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	err := h.taskService.DeleteTask(customContext, targetedTaskId)
+	err = h.taskService.DeleteTask(customContext, targetedTaskId)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
 			"status":  "fail",

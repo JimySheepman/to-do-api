@@ -33,9 +33,47 @@ services:
       - ./db/migrations/create_tasks_table.sql:/docker-entrypoint-initdb.d/1.sql
       - ./db/migrations/create_comments_table.sql:/docker-entrypoint-initdb.d/2.sql
 
+
+  zookeeper:
+    container_name: zookeeper
+    image: bitnami/zookeeper:latest
+    restart: always
+    ports:
+      - 2181:2181
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - app-network
+
+  kafka:
+    container_name: kafka
+    image: bitnami/kafka:latest
+    restart: always
+    ports:
+      - 9092:9092
+    hostname: 'kafka'
+    environment:
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_DELETE_TOPIC_ENABLE=true
+      - KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CREATE_TOPICS="to-do-test"
+    depends_on:
+      - zookeeper
+    links:
+      - zookeeper:zookeeper
+    networks:
+      - app-network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
 volumes:
   db:
     driver: local
 
 networks:
+  app-network:
+    driver: bridge
   application:

@@ -19,7 +19,7 @@ func NewTaskHandler(taskRoute fiber.Router, service service.TaskService) {
 	}
 
 	taskRoute.Post("/create", handler.createTask)
-	taskRoute.Get("/list", handler.listTask)
+	taskRoute.Get("/list", handler.ListTask)
 	taskRoute.Put("/update/:id", handler.updateTask)
 	taskRoute.Delete("/delete/:id", handler.deleteTask)
 }
@@ -51,7 +51,7 @@ func (h *TaskHandler) createTask(c *fiber.Ctx) error {
 	})
 }
 
-func (h *TaskHandler) listTask(c *fiber.Ctx) error {
+func (h *TaskHandler) ListTask(c *fiber.Ctx) error {
 	customContext, cancel := context.WithCancel(context.Background())
 	defer cancel()
 

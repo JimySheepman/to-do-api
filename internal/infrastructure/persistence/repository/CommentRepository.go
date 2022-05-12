@@ -10,7 +10,7 @@ import (
 
 const (
 	QUERY_CREATE_COMMENT = "INSERT INTO comments (task_id, user_name, user_comment,created_at) VALUES ($1, $2, $3, $4)"
-	QUERY_GET_COMMENTS   = "SELECT * FROM comments"
+	QUERY_GET_COMMENTS   = "SELECT * FROM comments WHERE statu= $1"
 	QUERY_UPDATE_COMMENT = "UPDATE comments SET username = $1, user_comment = $2 WHERE id = $3"
 	QUERY_DELETE_COMMENT = "DELETE FROM comments WHERE id = $1"
 )
@@ -43,7 +43,7 @@ func (r *postgresqlCommentRepository) CreateComment(ctx context.Context, comment
 
 func (r *postgresqlCommentRepository) ListComment(ctx context.Context) (*[]model.Comment, error) {
 	var commnets []model.Comment
-	res, err := r.potgresql.QueryContext(ctx, QUERY_GET_COMMENTS)
+	res, err := r.potgresql.QueryContext(ctx, QUERY_GET_COMMENTS, "approved")
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (r *postgresqlCommentRepository) ListComment(ctx context.Context) (*[]model
 
 	for res.Next() {
 		commnet := &model.Comment{}
-		err = res.Scan(&commnet.Id, &commnet.TaskId, &commnet.UserName, &commnet.UserComment, &commnet.CreatedAt)
+		err = res.Scan(&commnet.Id, &commnet.TaskId, &commnet.UserName, &commnet.UserComment, &commnet.Statu, &commnet.CreatedAt)
 		if err != nil && err == sql.ErrNoRows {
 			return nil, nil
 		}

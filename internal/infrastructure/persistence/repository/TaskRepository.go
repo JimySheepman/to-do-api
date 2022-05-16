@@ -4,8 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/JimySheepman/to-do-api/internal/domain/model"
-	"github.com/JimySheepman/to-do-api/internal/domain/repository"
+	"github.com/JimySheepman/to-do-api/internal/domain/task"
 )
 
 const (
@@ -19,13 +18,13 @@ type postgresqlTaskRepository struct {
 	potgresql *sql.DB
 }
 
-func NewTaskRepository(postgresqlConnection *sql.DB) repository.TaskRepository {
+func NewTaskRepository(postgresqlConnection *sql.DB) task.TaskRepository {
 	return &postgresqlTaskRepository{
 		potgresql: postgresqlConnection,
 	}
 }
 
-func (r *postgresqlTaskRepository) CreateTask(ctx context.Context, task *model.Task) error {
+func (r *postgresqlTaskRepository) CreateTask(ctx context.Context, task *task.Task) error {
 
 	stmt, err := r.potgresql.PrepareContext(ctx, QUERY_CREATE_TASK)
 	if err != nil {
@@ -41,8 +40,8 @@ func (r *postgresqlTaskRepository) CreateTask(ctx context.Context, task *model.T
 	return nil
 }
 
-func (r *postgresqlTaskRepository) ListTask(ctx context.Context) (*[]model.Task, error) {
-	var tasks []model.Task
+func (r *postgresqlTaskRepository) ListTask(ctx context.Context) (*[]task.Task, error) {
+	var tasks []task.Task
 	res, err := r.potgresql.QueryContext(ctx, QUERY_GET_TASKS)
 	if err != nil {
 		return nil, err
@@ -50,7 +49,7 @@ func (r *postgresqlTaskRepository) ListTask(ctx context.Context) (*[]model.Task,
 	defer res.Close()
 
 	for res.Next() {
-		task := &model.Task{}
+		task := &task.Task{}
 		err = res.Scan(&task.Id, &task.Title, &task.Content, &task.Category, &task.Statu, &task.CreatedAt)
 		if err != nil && err == sql.ErrNoRows {
 			return nil, nil
@@ -64,7 +63,7 @@ func (r *postgresqlTaskRepository) ListTask(ctx context.Context) (*[]model.Task,
 	return &tasks, nil
 }
 
-func (r *postgresqlTaskRepository) UpdateTask(ctx context.Context, id int, task *model.Task) error {
+func (r *postgresqlTaskRepository) UpdateTask(ctx context.Context, id int, task *task.Task) error {
 	stmt, err := r.potgresql.PrepareContext(ctx, QUERY_UPDATE_TASK)
 	if err != nil {
 		return err

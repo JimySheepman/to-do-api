@@ -4,8 +4,8 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/JimySheepman/to-do-api/internal/domain/model"
-	"github.com/JimySheepman/to-do-api/internal/domain/service"
+	"github.com/JimySheepman/to-do-api/internal/domain/comment"
+	"github.com/JimySheepman/to-do-api/internal/service"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -26,7 +26,7 @@ func NewCommentHandler(commentRoute fiber.Router, service service.CommentService
 }
 
 func (h *CommentHandler) createComment(c *fiber.Ctx) error {
-	comment := &model.Comment{}
+	comment := &comment.Comment{}
 
 	customContext, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -71,7 +71,7 @@ func (h *CommentHandler) listComment(c *fiber.Ctx) error {
 }
 
 func (h *CommentHandler) updateComment(c *fiber.Ctx) error {
-	comment := &model.Comment{}
+	comment := &comment.Comment{}
 	paramsMap := c.AllParams()
 
 	targetedId, err := strconv.Atoi(paramsMap["id"])

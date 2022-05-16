@@ -4,10 +4,10 @@ import (
 	"log"
 	"testing"
 
-	"github.com/JimySheepman/to-do-api/internal/domain/model"
-	"github.com/JimySheepman/to-do-api/internal/domain/service"
+	"github.com/JimySheepman/to-do-api/internal/domain/task"
 	"github.com/JimySheepman/to-do-api/internal/infrastructure/persistence"
 	"github.com/JimySheepman/to-do-api/internal/infrastructure/persistence/repository"
+	"github.com/JimySheepman/to-do-api/internal/service"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -26,7 +26,7 @@ func TestNewTaskHandler(t *testing.T) {
 
 func TestListTask(t *testing.T) {
 	var c *fiber.Ctx
-	var tasks *[]model.Task
+	var tasks *[]task.Task
 	taskHandler := TaskHandler{}
 
 	got := taskHandler.ListTask(c)

@@ -4,8 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/JimySheepman/to-do-api/internal/domain/model"
-	"github.com/JimySheepman/to-do-api/internal/domain/repository"
+	"github.com/JimySheepman/to-do-api/internal/domain/comment"
 )
 
 const (
@@ -19,13 +18,13 @@ type postgresqlCommentRepository struct {
 	potgresql *sql.DB
 }
 
-func NewCommentRepository(postgresqlConnection *sql.DB) repository.CommentRepository {
+func NewCommentRepository(postgresqlConnection *sql.DB) comment.CommentRepository {
 	return &postgresqlCommentRepository{
 		potgresql: postgresqlConnection,
 	}
 }
 
-func (r *postgresqlCommentRepository) CreateComment(ctx context.Context, comment *model.Comment) error {
+func (r *postgresqlCommentRepository) CreateComment(ctx context.Context, comment *comment.Comment) error {
 
 	stmt, err := r.potgresql.PrepareContext(ctx, QUERY_CREATE_COMMENT)
 	if err != nil {
@@ -41,8 +40,8 @@ func (r *postgresqlCommentRepository) CreateComment(ctx context.Context, comment
 	return nil
 }
 
-func (r *postgresqlCommentRepository) ListComment(ctx context.Context) (*[]model.Comment, error) {
-	var commnets []model.Comment
+func (r *postgresqlCommentRepository) ListComment(ctx context.Context) (*[]comment.Comment, error) {
+	var commnets []comment.Comment
 	res, err := r.potgresql.QueryContext(ctx, QUERY_GET_COMMENTS, "approved")
 	if err != nil {
 		return nil, err
@@ -50,7 +49,7 @@ func (r *postgresqlCommentRepository) ListComment(ctx context.Context) (*[]model
 	defer res.Close()
 
 	for res.Next() {
-		commnet := &model.Comment{}
+		commnet := &comment.Comment{}
 		err = res.Scan(&commnet.Id, &commnet.TaskId, &commnet.UserName, &commnet.UserComment, &commnet.Statu, &commnet.CreatedAt)
 		if err != nil && err == sql.ErrNoRows {
 			return nil, nil
@@ -64,7 +63,7 @@ func (r *postgresqlCommentRepository) ListComment(ctx context.Context) (*[]model
 	return &commnets, nil
 }
 
-func (r *postgresqlCommentRepository) UpdateComment(ctx context.Context, id int, comment *model.Comment) error {
+func (r *postgresqlCommentRepository) UpdateComment(ctx context.Context, id int, comment *comment.Comment) error {
 	stmt, err := r.potgresql.PrepareContext(ctx, QUERY_UPDATE_COMMENT)
 	if err != nil {
 		return err

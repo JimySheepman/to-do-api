@@ -9,9 +9,9 @@ import (
 	"time"
 
 	"github.com/JimySheepman/to-do-api/internal/application/handler"
-	"github.com/JimySheepman/to-do-api/internal/domain/service"
 	"github.com/JimySheepman/to-do-api/internal/infrastructure/persistence"
 	"github.com/JimySheepman/to-do-api/internal/infrastructure/persistence/repository"
+	"github.com/JimySheepman/to-do-api/internal/service"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"

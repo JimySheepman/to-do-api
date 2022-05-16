@@ -4,8 +4,8 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/JimySheepman/to-do-api/internal/domain/model"
-	"github.com/JimySheepman/to-do-api/internal/domain/service"
+	"github.com/JimySheepman/to-do-api/internal/domain/task"
+	"github.com/JimySheepman/to-do-api/internal/service"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -25,7 +25,7 @@ func NewTaskHandler(taskRoute fiber.Router, service service.TaskService) {
 }
 
 func (h *TaskHandler) createTask(c *fiber.Ctx) error {
-	task := &model.Task{}
+	task := &task.Task{}
 
 	customContext, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -70,7 +70,7 @@ func (h *TaskHandler) ListTask(c *fiber.Ctx) error {
 }
 
 func (h *TaskHandler) updateTask(c *fiber.Ctx) error {
-	task := &model.Task{}
+	task := &task.Task{}
 	paramsMap := c.AllParams()
 
 	targetedTaskId, err := strconv.Atoi(paramsMap["id"])

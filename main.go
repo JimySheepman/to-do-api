@@ -72,5 +72,5 @@ func main() {
 		})
 	})
 
-	GracefulShutdown(app, ":8080")
+	GracefulShutdown(app, "0.0.0.0:8080")
 }

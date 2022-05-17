@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/JimySheepman/to-do-api/internal/domain/comment"
+	"github.com/JimySheepman/to-do-api/internal/infrastructure/broker/producer"
 )
 
 type CommentService interface {
@@ -26,6 +27,7 @@ func NewCommentService(r comment.CommentRepository) CommentService {
 
 func (s *commentService) CreateComment(ctx context.Context, comment *comment.Comment) error {
 	comment.CreatedAt = time.Now()
+	producer.Send("comment", comment)
 	return s.commentRepository.CreateComment(ctx, comment)
 }
 

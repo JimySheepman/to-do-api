@@ -19,10 +19,10 @@ func NewCommentHandler(commentRoute fiber.Router, service service.CommentService
 		commentService: service,
 	}
 
-	commentRoute.Post("/create", handler.createComment)
-	commentRoute.Get("/list", handler.listComment)
-	commentRoute.Put("/update/:id", handler.updateComment)
-	commentRoute.Delete("/delete/:id", handler.deleteComment)
+	commentRoute.Post("/", handler.createComment)
+	commentRoute.Get("/", handler.listComment)
+	commentRoute.Put("/:id", handler.updateComment)
+	commentRoute.Delete("/:id", handler.deleteComment)
 }
 
 func (h *CommentHandler) createComment(c *fiber.Ctx) error {
@@ -46,10 +46,7 @@ func (h *CommentHandler) createComment(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(&fiber.Map{
-		"status":  "success",
-		"message": "Comment has been created successfully!",
-	})
+	return c.SendStatus(fiber.StatusCreated)
 }
 
 func (h *CommentHandler) listComment(c *fiber.Ctx) error {
@@ -65,8 +62,7 @@ func (h *CommentHandler) listComment(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(&fiber.Map{
-		"status": "success",
-		"data":   comments,
+		"data": comments,
 	})
 }
 
@@ -97,10 +93,7 @@ func (h *CommentHandler) updateComment(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.Status(fiber.StatusOK).JSON(&fiber.Map{
-		"status":  "success",
-		"message": "Comment has been updated successfully!",
-	})
+	return c.SendStatus(fiber.StatusOK)
 }
 
 func (h *CommentHandler) deleteComment(c *fiber.Ctx) error {

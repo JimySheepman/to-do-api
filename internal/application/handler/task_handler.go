@@ -18,10 +18,10 @@ func NewTaskHandler(taskRoute fiber.Router, service service.TaskService) {
 		taskService: service,
 	}
 
-	taskRoute.Post("/create", handler.createTask)
-	taskRoute.Get("/list", handler.ListTask)
-	taskRoute.Put("/update/:id", handler.updateTask)
-	taskRoute.Delete("/delete/:id", handler.deleteTask)
+	taskRoute.Post("/", handler.createTask)
+	taskRoute.Get("/", handler.ListTask)
+	taskRoute.Put("/:id", handler.updateTask)
+	taskRoute.Delete("/:id", handler.deleteTask)
 }
 
 func (h *TaskHandler) createTask(c *fiber.Ctx) error {
@@ -45,10 +45,7 @@ func (h *TaskHandler) createTask(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(&fiber.Map{
-		"status":  "success",
-		"message": "Task has been created successfully!",
-	})
+	return c.SendStatus(fiber.StatusCreated)
 }
 
 func (h *TaskHandler) ListTask(c *fiber.Ctx) error {
@@ -64,8 +61,7 @@ func (h *TaskHandler) ListTask(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(&fiber.Map{
-		"status": "success",
-		"data":   tasks,
+		"data": tasks,
 	})
 }
 

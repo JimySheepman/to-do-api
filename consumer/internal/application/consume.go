@@ -30,13 +30,11 @@ func (c *CommentConsume) Consuming(reader *kafka.Reader) error {
 		if err != nil {
 			return err
 		}
+		log.Printf("message at topic:%v partition:%v offset:%v	%s = %s\n", msg.Topic, msg.Partition, msg.Offset, string(msg.Key), string(msg.Value))
 
 		err = c.commentService.UpdateComment(msg)
-
 		if err != nil {
 			return err
 		}
-
-		log.Printf("message at topic:%v partition:%v offset:%v	%s = %s\n", msg.Topic, msg.Partition, msg.Offset, string(msg.Key), string(msg.Value))
 	}
 }

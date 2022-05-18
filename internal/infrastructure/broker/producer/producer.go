@@ -40,7 +40,7 @@ func Send(key string, value interface{}) error {
 	if err != nil {
 		return err
 	} else {
-		fmt.Println("produced -> ", key)
+		fmt.Println("produced ->  key: ", key, "\nvalue: ", string(buff.Bytes()))
 	}
 
 	defer fmt.Println("close producing sending ... !!")

@@ -1,5 +1,7 @@
 package comment
 
+import "time"
+
 type CommentRepository interface {
-	UpdateComment(id int, statu string, comment *Comment) error
+	UpdateComment(createdAt time.Time, statu string, comment *Comment) error
 }

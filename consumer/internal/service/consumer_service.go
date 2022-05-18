@@ -34,7 +34,7 @@ func (s *commentService) UpdateComment(msg kafka.Message) error {
 
 		statu := ValidateMessageContent(newMessgae)
 
-		return s.commentRepository.UpdateComment(newMessgae.Id, statu, newMessgae)
+		return s.commentRepository.UpdateComment(newMessgae.CreatedAt, statu, newMessgae)
 	}
 	return nil
 }

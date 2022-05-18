@@ -8,9 +8,9 @@ import (
 )
 
 const (
-	QUERY_CREATE_COMMENT = "INSERT INTO comments (task_id, user_name, user_comment,created_at) VALUES ($1, $2, $3, $4)"
+	QUERY_CREATE_COMMENT = "INSERT INTO comments (task_id, user_name, user_comment, statu,created_at) VALUES ($1, $2, $3, $4, $5)"
 	QUERY_GET_COMMENTS   = "SELECT * FROM comments WHERE statu= $1"
-	QUERY_UPDATE_COMMENT = "UPDATE comments SET username = $1, user_comment = $2 WHERE id = $3"
+	QUERY_UPDATE_COMMENT = "UPDATE comments SET user_name = $1, user_comment = $2 WHERE id = $3"
 	QUERY_DELETE_COMMENT = "DELETE FROM comments WHERE id = $1"
 )
 
@@ -32,7 +32,7 @@ func (r *postgresqlCommentRepository) CreateComment(ctx context.Context, comment
 	}
 	defer stmt.Close()
 
-	_, err = stmt.ExecContext(ctx, comment.TaskId, comment.UserName, comment.UserComment, comment.CreatedAt)
+	_, err = stmt.ExecContext(ctx, comment.TaskId, comment.UserName, comment.UserComment, comment.Statu, comment.CreatedAt)
 	if err != nil {
 		return err
 	}

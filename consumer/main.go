@@ -1,12 +1,13 @@
 package main
 
 import (
-	"context"
-	"fmt"
 	"log"
-	"strings"
 
-	kafka "github.com/segmentio/kafka-go"
+	"github.com/JimySheepman/to-do-api/consumer/internal/application"
+	"github.com/JimySheepman/to-do-api/consumer/internal/infrastructure/consumer"
+	"github.com/JimySheepman/to-do-api/consumer/internal/infrastructure/db"
+	"github.com/JimySheepman/to-do-api/consumer/internal/infrastructure/db/repository"
+	"github.com/JimySheepman/to-do-api/consumer/internal/service"
 )
 
 const (
@@ -15,29 +16,18 @@ const (
 	GROUP_ID  = "0"
 )
 
-func GetKafkaReader(kafkaURL, topic, groupID string) *kafka.Reader {
-	brokers := strings.Split(kafkaURL, ",")
-	return kafka.NewReader(kafka.ReaderConfig{
-		Brokers:  brokers,
-		GroupID:  groupID,
-		Topic:    topic,
-		MinBytes: 10e3, // 10KB
-		MaxBytes: 10e6, // 10MB
-	})
-}
-
 func main() {
 
-	reader := GetKafkaReader(KAFKA_URL, TOPIC, GROUP_ID)
-
-	defer reader.Close()
-
-	fmt.Println("start consuming ... !!")
-	for {
-		m, err := reader.ReadMessage(context.Background())
-		if err != nil {
-			log.Fatalln(err)
-		}
-		fmt.Printf("message at topic:%v partition:%v offset:%v	%s = %s\n", m.Topic, m.Partition, m.Offset, string(m.Key), string(m.Value))
+	postgresql, err := db.ConnectDB()
+	if err != nil {
+		log.Fatal("Database connection error: $s", err)
 	}
+
+	commentRepository := repository.NewCommentRepository(postgresql)
+
+	commentService := service.NewCommentService(commentRepository)
+
+	reader := consumer.GetKafkaReader(KAFKA_URL, TOPIC, GROUP_ID)
+
+	application.NewCommentConsume(reader, commentService)
 }

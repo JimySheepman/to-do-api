@@ -14,16 +14,19 @@ $ make run
 $ ./start.sh
 # docker
 $ docker-compose up -d
+# consumer
+$ go run ./consumer/main.go
 ```
 
 ## Features
 
 - [X] Domein-Driven Desing
 - [X] Dockerize
+- [X] PostgreSQL
 - [X] Rest API
 - [X] Fiber
 - [X] Swagger
-- [ ] Kafka
+- [X] Kafka
 - [ ] Kubernetes Deployment File
 - [ ] Unit Test
 - [ ] Integration testing
@@ -34,6 +37,26 @@ $ docker-compose up -d
 ```Bash
 $ tree 
 .
+├── consumer
+│   ├── internal
+│   │   ├── application
+│   │   │   └── consume.go
+│   │   ├── domain
+│   │   │   ├── black_list
+│   │   │   │   └── black_list.go
+│   │   │   └── comment
+│   │   │       ├── comment.go
+│   │   │       └── comment_repository.go
+│   │   ├── infrastructure
+│   │   │   ├── consumer
+│   │   │   │   └── reader.go
+│   │   │   └── db
+│   │   │       ├── connect_db.go
+│   │   │       └── repository
+│   │   │           └── comment_repository.go
+│   │   └── service
+│   │       └── consumer_service.go
+│   └── main.go
 ├── db
 │   └── migrations
 │       ├── create_comments_table.sql
@@ -46,42 +69,39 @@ $ tree
 │   └── swagger.yaml
 ├── internal
 │   ├── application
-│   │   ├── handler
-│   │   │   ├── comment_handler.go
-│   │   │   └── task_handler.go
-│   │   └── router
-│   │       └── router.go
+│   │   └── handler
+│   │       ├── comment_handler.go
+│   │       ├── task_handler.go
+│   │       └── task_handler_test.go
 │   ├── domain
-│   │   ├── model
+│   │   ├── comment
 │   │   │   ├── comment.go
-│   │   │   └── task.go
-│   │   ├── repository
-│   │   │   ├── CommentRepository.go
-│   │   │   └── TaskRepository.go
-│   │   └── service
-│   │       ├── CommentService.go
-│   │       ├── CommentServiceRepository.go
-│   │       ├── TaskService.go
-│   │       └── TaskServiceRepository.go
-│   └── infrastructure
-│       ├── broker
-│       │   ├── consumer
-│       │   ├── interfaces
-│       │   └── producer
-│       ├── config
-│       │   └── config.go
-│       └── persistence
-│           ├── connect.go
-│           └── repository
-│               ├── CommentRepository.go
-│               └── TaskRepository.go
+│   │   │   └── comment_repository.go
+│   │   └── task
+│   │       ├── task.go
+│   │       └── task_repository.go
+│   ├── infrastructure
+│   │   ├── broker
+│   │   │   └── producer
+│   │   │       └── producer.go
+│   │   ├── config
+│   │   │   └── config.go
+│   │   └── persistence
+│   │       ├── connect.go
+│   │       └── repository
+│   │           ├── comment_repository.go
+│   │           └── task_repository.go
+│   └── service
+│       ├── CommentService.go
+│       └── TaskService.go
 ├── docker-compose.yml
 ├── Dockerfile
-├── Makefile
-├──  start.sh
-├── LICENSE
-├── README.md
+├── Dockerfile.test1
 ├── go.mod
 ├── go.sum
-└──  main.go
+├── LICENSE
+├── main.go
+├── Makefile
+├── README.md
+└── start.sh
 ```

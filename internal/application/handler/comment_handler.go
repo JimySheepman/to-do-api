@@ -13,16 +13,23 @@ type CommentHandler struct {
 	commentService service.CommentService
 }
 
-func NewCommentHandler(commentRoute fiber.Router, service service.CommentService) {
+func NewCommentRouter(commentRoute fiber.Router, service service.CommentService) {
 
-	handler := &CommentHandler{
-		commentService: service,
-	}
+	handler := newCommentHandler(service)
 
 	commentRoute.Post("/", handler.createComment)
 	commentRoute.Get("/", handler.listComment)
 	commentRoute.Put("/:id", handler.updateComment)
 	commentRoute.Delete("/:id", handler.deleteComment)
+}
+
+func newCommentHandler(service service.CommentService) *CommentHandler {
+
+	handler := &CommentHandler{
+		commentService: service,
+	}
+
+	return handler
 }
 
 func (h *CommentHandler) createComment(c *fiber.Ctx) error {
@@ -69,6 +76,7 @@ func (h *CommentHandler) listComment(c *fiber.Ctx) error {
 func (h *CommentHandler) updateComment(c *fiber.Ctx) error {
 	comment := &comment.Comment{}
 	paramsMap := c.AllParams()
+	//c.Bind()
 
 	targetedId, err := strconv.Atoi(paramsMap["id"])
 	if err != nil {
@@ -84,6 +92,7 @@ func (h *CommentHandler) updateComment(c *fiber.Ctx) error {
 			"message": err.Error(),
 		})
 	}
+	//error handler mıddleware
 
 	err = h.commentService.UpdateComment(customContext, targetedId, comment)
 	if err != nil {
@@ -92,6 +101,7 @@ func (h *CommentHandler) updateComment(c *fiber.Ctx) error {
 			"message": err.Error(),
 		})
 	}
+	//error handle mıddleware
 
 	return c.SendStatus(fiber.StatusOK)
 }

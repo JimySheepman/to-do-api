@@ -61,7 +61,7 @@ func main() {
 	commentService := service.NewCommentService(commentRepository)
 
 	handler.NewTaskHandler(app.Group("/api/v1/task"), taskService)
-	handler.NewCommentHandler(app.Group("/api/v1/comment"), commentService)
+	handler.NewCommentRouter(app.Group("/api/v1/comment"), commentService)
 
 	app.All("*", func(c *fiber.Ctx) error {
 		errorMessage := fmt.Sprintf("Route '%s' does not exist in this API!", c.OriginalURL())

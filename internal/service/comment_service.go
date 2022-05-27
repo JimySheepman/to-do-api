@@ -27,6 +27,7 @@ func NewCommentService(r comment.CommentRepository) CommentService {
 
 func (s *commentService) CreateComment(ctx context.Context, comment *comment.Comment) error {
 	comment.CreatedAt = time.Now()
+	// TODO: how to check producer error in service layer
 	producer.Send("comment", comment)
 	return s.commentRepository.CreateComment(ctx, comment)
 }

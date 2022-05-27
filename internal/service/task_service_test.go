@@ -58,39 +58,6 @@ func (r *postgresqlTaskMockRepository) DeleteTask(ctx context.Context, id int) e
 	return r.delete[id]
 }
 
-/*
-func Test_UpdateComment(t *testing.T) {
-	r := NewMockTaskRepository()
-	s := NewTaskService(r)
-
-	r.OnCreate(1000, nil)
-	r.OnCreate(2000, errors.New("test"))
-
-	tsk1 := &task.Task{
-		Id: 1000,
-	}
-
-	tsk2 := &task.Task{
-		Id: 2000,
-	}
-
-	actual1 := s.CreateTask(context.Background(), tsk1)
-	var expected1 error
-
-	actual2 := s.CreateTask(context.Background(), tsk2)
-	expected2 := errors.New("test")
-
-	if actual1 != expected1 {
-		t.Error("test1")
-	}
-
-	if !reflect.DeepEqual(actual2, expected2) {
-		t.Error("test2")
-	}
-}
-
-
-*/
 func TestCreateTask(t *testing.T) {
 	r := NewMockTaskRepository()
 	s := NewTaskService(r)
@@ -203,5 +170,35 @@ func TestDeleteTask(t *testing.T) {
 				t.Errorf("%d value error", test.num)
 			}
 		})
+	}
+}
+
+func ExampleCreateComment(t *testing.T) {
+	r := NewMockTaskRepository()
+	s := NewTaskService(r)
+
+	r.OnCreate(1000, nil)
+	r.OnCreate(2000, errors.New("test"))
+
+	tsk1 := &task.Task{
+		Id: 1000,
+	}
+
+	tsk2 := &task.Task{
+		Id: 2000,
+	}
+
+	actual1 := s.CreateTask(context.Background(), tsk1)
+	var expected1 error
+
+	actual2 := s.CreateTask(context.Background(), tsk2)
+	expected2 := errors.New("test")
+
+	if actual1 != expected1 {
+		t.Error("test1")
+	}
+
+	if !reflect.DeepEqual(actual2, expected2) {
+		t.Error("test2")
 	}
 }

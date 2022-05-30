@@ -42,7 +42,7 @@ func GracefulShutdown(app *fiber.App, port string) {
 
 func main() {
 
-	postgresql, err := persistence.ConnectDB()
+	postgresql, err := persistence.ConnectDB("postgres", "postgres://postgres:root@localhost:5432/postgres?sslmode=disable")
 	if err != nil {
 		log.Fatal("Database connection error: $s", err)
 	}

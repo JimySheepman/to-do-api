@@ -23,7 +23,6 @@ func NewMock() (*sql.DB, sqlmock.Sqlmock) {
 }
 
 // TODO: find how to fecth a PrepareContext err
-
 func TestCreateComment(t *testing.T) {
 	db, mock := NewMock()
 	repo := NewCommentRepository(db)
@@ -46,8 +45,9 @@ func TestCreateComment(t *testing.T) {
 			comment.CreatedAt).WillReturnResult(sqlmock.NewResult(0, 1))
 
 		actual := repo.CreateComment(context.Background(), comment)
-		if !reflect.DeepEqual(actual, nil) {
-			t.Errorf("got:%v expect:%v", actual, nil)
+		var want error = nil
+		if !reflect.DeepEqual(actual, want) {
+			t.Errorf("got:%v expect:%v", actual, want)
 		}
 	})
 
@@ -57,7 +57,7 @@ func TestCreateComment(t *testing.T) {
 		prep.ExpectExec().WithArgs().WillReturnResult(sqlmock.NewResult(0, 1))
 
 		actual := repo.CreateComment(context.Background(), comment)
-		want := errors.New("")
+		var want error = nil
 		if !reflect.DeepEqual(actual, want) {
 			t.Errorf("got:%v expect:%v", actual, want)
 		}
@@ -148,7 +148,7 @@ func TestUpdateComment(t *testing.T) {
 		prep.ExpectExec().WithArgs(comment.UserName, comment.Id).WillReturnResult(sqlmock.NewResult(0, 1))
 
 		actual := repo.UpdateComment(context.Background(), comment.Id, comment)
-		var want error = nil
+		want := errors.New("ExecQuery 'UPDATE comments SET user_name = $1, user_comment = $2 WHERE id = $3', arguments do not match: expected 2, but got 3 arguments")
 		if !reflect.DeepEqual(actual, want) {
 			t.Errorf("got:%v expect:%v", actual, want)
 		}
@@ -186,10 +186,9 @@ func TestDeleteComment(t *testing.T) {
 		prep.ExpectExec().WithArgs(comment.UserName, comment.UserComment, comment.Id).WillReturnResult(sqlmock.NewResult(0, 1))
 
 		actual := repo.DeleteComment(context.Background(), comment.Id)
-		var want error = nil
+		want := errors.New("ExecQuery 'DELETE FROM comments WHERE id = $1', arguments do not match: expected 3, but got 1 arguments")
 		if !reflect.DeepEqual(actual, want) {
 			t.Errorf("got:%v expect:%v", actual, want)
 		}
 	})
-
 }

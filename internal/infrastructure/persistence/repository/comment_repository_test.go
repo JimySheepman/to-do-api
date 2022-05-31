@@ -35,7 +35,7 @@ func TestCreateComment(t *testing.T) {
 		CreatedAt:   time.Now(),
 	}
 
-	t.Run("succesful create", func(t *testing.T) {
+	t.Run("successful create", func(t *testing.T) {
 		query := "INSERT INTO comments \\(task_id, user_name, user_comment, statu,created_at\\) VALUES \\(\\$1, \\$2, \\$3, \\$4, \\$5\\)"
 		prep := mock.ExpectPrepare(query)
 		prep.ExpectExec().WithArgs(comment.TaskId,
@@ -130,7 +130,7 @@ func TestUpdateComment(t *testing.T) {
 		CreatedAt:   time.Now(),
 	}
 
-	t.Run("succesful update", func(t *testing.T) {
+	t.Run("successful update", func(t *testing.T) {
 		query := "UPDATE comments SET user_name = \\$1, user_comment = \\$2 WHERE id = \\$3"
 		prep := mock.ExpectPrepare(query)
 		prep.ExpectExec().WithArgs(comment.UserName, comment.UserComment, comment.Id).WillReturnResult(sqlmock.NewResult(0, 1))
@@ -168,7 +168,7 @@ func TestDeleteComment(t *testing.T) {
 		CreatedAt:   time.Now(),
 	}
 
-	t.Run("succesful delete", func(t *testing.T) {
+	t.Run("successful delete", func(t *testing.T) {
 		query := "DELETE FROM comments WHERE id = \\$1"
 		prep := mock.ExpectPrepare(query)
 		prep.ExpectExec().WithArgs(comment.Id).WillReturnResult(sqlmock.NewResult(0, 1))

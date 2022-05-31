@@ -13,7 +13,7 @@ func TestConnectDB(t *testing.T) {
 		dns        string
 		err        error
 	}{
-		{"succesful connection", "postgres", "postgres://postgres:root@localhost:5432/postgres?sslmode=disable", nil},
+		{"successful connection", "postgres", "postgres://postgres:root@localhost:5432/postgres?sslmode=disable", nil},
 		{"dns error", "postgres", "postgres://postgres:root@localhost/postgres?sslmode=disable", nil},
 		{"ping error", "postgres", "postgres://postgres:root@localhost:5432", errors.New(`pq: SSL is not enabled on the server`)},
 		{"driver name error", "postg", "postgres://postgres:root@localhost:5432/postgres?sslmode=disable", errors.New(`sql: unknown driver "postg" (forgotten import?)`)},

@@ -25,7 +25,7 @@ func TestCreateTask(t *testing.T) {
 		CreatedAt: time.Now(),
 	}
 
-	t.Run("succesful create", func(t *testing.T) {
+	t.Run("successful create", func(t *testing.T) {
 		query := "INSERT INTO tasks \\(title, content, category,statu,created_at\\) VALUES \\(\\$1, \\$2, \\$3, \\$4, \\$5\\)"
 		prep := mock.ExpectPrepare(query)
 		prep.ExpectExec().WithArgs(task.Title,
@@ -122,7 +122,7 @@ func TestUpdateTask(t *testing.T) {
 		CreatedAt: time.Now(),
 	}
 
-	t.Run("succesful update", func(t *testing.T) {
+	t.Run("successful update", func(t *testing.T) {
 		query := "UPDATE tasks SET title = \\$1, content = \\$2, category = \\$3, statu = \\$4 WHERE id = \\$5"
 		prep := mock.ExpectPrepare(query)
 		prep.ExpectExec().WithArgs(task.Title, task.Content, task.Category, task.Statu, task.Id).WillReturnResult(sqlmock.NewResult(0, 1))
@@ -160,7 +160,7 @@ func TestDeleteTask(t *testing.T) {
 		CreatedAt: time.Now(),
 	}
 
-	t.Run("succesful delete", func(t *testing.T) {
+	t.Run("successful delete", func(t *testing.T) {
 		query := "DELETE FROM tasks WHERE id = \\$1"
 		prep := mock.ExpectPrepare(query)
 		prep.ExpectExec().WithArgs(task.Id).WillReturnResult(sqlmock.NewResult(0, 1))

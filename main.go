@@ -60,7 +60,7 @@ func main() {
 	taskService := service.NewTaskService(taskRepository)
 	commentService := service.NewCommentService(commentRepository)
 
-	handler.NewTaskHandler(app.Group("/api/v1/task"), taskService)
+	handler.NewTaskRouter(app.Group("/api/v1/task"), taskService)
 	handler.NewCommentRouter(app.Group("/api/v1/comment"), commentService)
 
 	app.All("*", func(c *fiber.Ctx) error {

@@ -13,15 +13,21 @@ type TaskHandler struct {
 	taskService service.TaskService
 }
 
-func NewTaskHandler(taskRoute fiber.Router, service service.TaskService) {
-	handler := &TaskHandler{
-		taskService: service,
-	}
+func NewTaskRouter(taskRoute fiber.Router, service service.TaskService) {
+	handler := newTaskHandler(service)
 
 	taskRoute.Post("/", handler.createTask)
 	taskRoute.Get("/", handler.ListTask)
 	taskRoute.Put("/:id", handler.updateTask)
 	taskRoute.Delete("/:id", handler.deleteTask)
+}
+
+func newTaskHandler(service service.TaskService) *TaskHandler {
+	handler := &TaskHandler{
+		taskService: service,
+	}
+
+	return handler
 }
 
 func (h *TaskHandler) createTask(c *fiber.Ctx) error {
@@ -71,7 +77,10 @@ func (h *TaskHandler) updateTask(c *fiber.Ctx) error {
 
 	targetedTaskId, err := strconv.Atoi(paramsMap["id"])
 	if err != nil {
-		return err
+		return c.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
+			"status":  "fail",
+			"message": err.Error(),
+		})
 	}
 
 	customContext, cancel := context.WithCancel(context.Background())
@@ -103,7 +112,10 @@ func (h *TaskHandler) deleteTask(c *fiber.Ctx) error {
 
 	targetedTaskId, err := strconv.Atoi(paramsMap["id"])
 	if err != nil {
-		return err
+		return c.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
+			"status":  "fail",
+			"message": err.Error(),
+		})
 	}
 	customContext, cancel := context.WithCancel(context.Background())
 	defer cancel()

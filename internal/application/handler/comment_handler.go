@@ -80,7 +80,10 @@ func (h *CommentHandler) updateComment(c *fiber.Ctx) error {
 
 	targetedId, err := strconv.Atoi(paramsMap["id"])
 	if err != nil {
-		return err
+		return c.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
+			"status":  "fail",
+			"message": err.Error(),
+		})
 	}
 
 	customContext, cancel := context.WithCancel(context.Background())
@@ -111,7 +114,10 @@ func (h *CommentHandler) deleteComment(c *fiber.Ctx) error {
 
 	targetedId, err := strconv.Atoi(paramsMap["id"])
 	if err != nil {
-		return err
+		return c.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
+			"status":  "fail",
+			"message": err.Error(),
+		})
 	}
 
 	customContext, cancel := context.WithCancel(context.Background())

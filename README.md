@@ -27,10 +27,8 @@ $ go run ./consumer/main.go
 - [X] Fiber
 - [X] Swagger
 - [X] Kafka
+- [X] Unit Test
 - [ ] Kubernetes Deployment File
-- [ ] Unit Test
-- [ ] Integration testing
-- [ ] E2E testing
 
 ## Project Layout
 

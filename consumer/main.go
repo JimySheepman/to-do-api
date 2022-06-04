@@ -18,7 +18,7 @@ const (
 
 func main() {
 
-	postgresql, err := db.ConnectDB()
+	postgresql, err := db.ConnectDB("postgres", "postgres://postgres:root@localhost:5432/postgres?sslmode=disable")
 	if err != nil {
 		log.Fatal("Database connection error: $s", err)
 	}
@@ -32,5 +32,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	application.NewCommentConsume(reader, commentService)
+	consume := application.NewCommentConsume(commentService)
+	consume.Consuming(reader)
+
 }

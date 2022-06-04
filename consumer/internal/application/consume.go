@@ -12,12 +12,10 @@ type CommentConsume struct {
 	commentService service.CommentService
 }
 
-func NewCommentConsume(reader *kafka.Reader, service service.CommentService) {
-
-	consume := &CommentConsume{
+func NewCommentConsume(service service.CommentService) *CommentConsume {
+	return &CommentConsume{
 		commentService: service,
 	}
-	consume.Consuming(reader)
 }
 
 func (c *CommentConsume) Consuming(reader *kafka.Reader) error {

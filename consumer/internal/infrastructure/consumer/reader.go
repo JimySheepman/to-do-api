@@ -6,7 +6,7 @@ import (
 	kafka "github.com/segmentio/kafka-go"
 )
 
-func GetKafkaReader(kafkaURL, topic, groupID string) *kafka.Reader {
+func GetKafkaReader(kafkaURL, topic, groupID string) (*kafka.Reader, error) {
 	brokers := strings.Split(kafkaURL, ",")
 	return kafka.NewReader(kafka.ReaderConfig{
 		Brokers:  brokers,
@@ -14,5 +14,5 @@ func GetKafkaReader(kafkaURL, topic, groupID string) *kafka.Reader {
 		Topic:    topic,
 		MinBytes: 10e3, // 10KB
 		MaxBytes: 10e6, // 10MB
-	})
+	}), nil
 }

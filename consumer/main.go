@@ -27,7 +27,10 @@ func main() {
 
 	commentService := service.NewCommentService(commentRepository)
 
-	reader := consumer.GetKafkaReader(KAFKA_URL, TOPIC, GROUP_ID)
+	reader, err := consumer.GetKafkaReader(KAFKA_URL, TOPIC, GROUP_ID)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	application.NewCommentConsume(reader, commentService)
 }

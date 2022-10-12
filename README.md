@@ -20,7 +20,7 @@ $ go run ./consumer/main.go
 
 ## Features
 
-- [X] Domein-Driven Desing
+- [X] Domein-Driven Design
 - [X] Dockerize
 - [X] PostgreSQL
 - [X] Rest API
